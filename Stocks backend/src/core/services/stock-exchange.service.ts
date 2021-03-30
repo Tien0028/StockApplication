@@ -1,11 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Stock } from '../models/stock.model';
 import { IStockExchangeService } from '../primary-ports/stock-exchange.service.interface';
-import compileStreaming = WebAssembly.compileStreaming;
 import StockEntity from '../../infrastructure/data-source/entities/stock.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { getConnection } from 'typeorm';
 
 @Injectable()
 export class StockExchangeService implements IStockExchangeService {
@@ -18,7 +16,7 @@ export class StockExchangeService implements IStockExchangeService {
 
   addStock(): void {
     const testStock: Stock = {
-      id: '1',
+      id: 1,
       name: 'Gnome Power',
       description: 'Does gnome stuff',
       currentPrice: 1111,
@@ -29,7 +27,7 @@ export class StockExchangeService implements IStockExchangeService {
     this.stockRepository
       .save(testStock)
       .then((testStock) => {
-        console.log('Stock found: ', testStock);
+        console.log('Stock has been found: ', testStock);
       })
       .catch((err) => {
         console.log('Error: ', err);
@@ -37,14 +35,14 @@ export class StockExchangeService implements IStockExchangeService {
       .finally(() => {
         console.log('Finally called');
       });
-    console.log('ADDSTOCK');
+    console.log('ADDed STOCK');
   }
 
   async updateStockValue(
-    stockId: string,
+    stockId: number,
     updatedStockValue: string,
   ): Promise<void> {
-    const stockDB = await this.stockRepository.findOne({ id: stockId }); //((s) => s.id === id);
+    const stockDB = await this.stockRepository.findOne({ id: stockId });
     if (stockDB) {
       stockDB.currentPrice = parseInt(updatedStockValue);
       await this.stockRepository.update(stockId, stockDB);
@@ -52,13 +50,25 @@ export class StockExchangeService implements IStockExchangeService {
   }
 
   async getAllStocks(): Promise<Stock[]> {
-    //return this.allStocks;
-
     const stocks = await this.stockRepository.find();
     console.log('Stocks = ', stocks);
     const allStocks: Stock[] = JSON.parse(JSON.stringify(stocks));
     console.log('getAllStocks total: ', allStocks.length);
-
     return allStocks;
+  }
+  async createStock(stock: Stock): Promise<Stock> {
+    try {
+      const stockCreated = await this.stockRepository.create({
+        name: stock.name,
+        description: stock.description,
+        currentPrice: stock.currentPrice,
+        startDate: stock.startDate,
+        startPrice: stock.startPrice,
+      });
+      await this.stockRepository.save(stockCreated);
+      return stockCreated;
+    } catch (e) {
+      console.log('Catch an error', e);
+    }
   }
 }

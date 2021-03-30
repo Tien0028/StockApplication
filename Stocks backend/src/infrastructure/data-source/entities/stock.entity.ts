@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class StockEntity {
-  @PrimaryColumn({ unique: true })
-  public id: string;
+  @PrimaryGeneratedColumn()
+  public id: number;
 
   @Column({ unique: true })
   public name: string;
@@ -11,13 +11,13 @@ export class StockEntity {
   @Column({ unique: true })
   public description: string;
 
-  @Column({ unique: true })
+  @Column()
   public currentPrice: number;
 
-  @Column({ unique: true })
+  @Column()
   public startPrice: number;
 
-  @Column({ unique: true })
+  @Column()
   public startDate: string;
 }
 

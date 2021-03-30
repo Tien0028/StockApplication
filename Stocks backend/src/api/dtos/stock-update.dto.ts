@@ -1,4 +1,4 @@
 export interface StockUpdateDTO {
-  id: string;
+  id: number;
   updatedStockValue: string;
 }

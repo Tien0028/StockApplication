@@ -1,5 +1,5 @@
 import {
-  // NEW FROM HERE!!!
+  ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -14,6 +14,7 @@ import {
   IStockExchangeServiceProvider,
 } from '../../core/primary-ports/stock-exchange.service.interface';
 import { StockUpdateDTO } from '../dtos/stock-update.dto';
+import { Stock } from '../../core/models/stock.model';
 
 @WebSocketGateway()
 export class StockExchangeGateway
@@ -26,17 +27,35 @@ export class StockExchangeGateway
   @WebSocketServer() server;
   @SubscribeMessage('update')
   async handleStockUpdateEvent(
-    @MessageBody() stockUpdate: StockUpdateDTO, //, updatedStockValue: string  //REPLACE with DTO
+    @MessageBody() stockUpdate: StockUpdateDTO,
   ): Promise<void> {
     console.log('Gateway = ', stockUpdate.id, stockUpdate.updatedStockValue);
-    // const stockToReturn =
-
     await this.stockExchangeService.updateStockValue(
       stockUpdate.id,
       stockUpdate.updatedStockValue,
     );
-    //this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);  //WORKS OLD
-    this.server.emit('update', this.stockExchangeService.getAllStocks()); // Return stockToReturn??  // NEW was allStocks
+    this.server.emit('update', this.stockExchangeService.getAllStocks());
+  }
+
+  @SubscribeMessage('create-stock')
+  async handleMessage(
+    @MessageBody() data: Stock,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const stock: Stock = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      currentPrice: data.currentPrice,
+      startPrice: data.startPrice,
+      startDate: data.startDate,
+    };
+    try {
+      const stockCreated = await this.stockExchangeService.createStock(stock);
+      client.emit('stock-created-success', stockCreated);
+    } catch (e) {
+      client.emit('stock-created-error', e.message);
+    }
   }
 
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
