@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { StockExchangeRoutingModule } from './stock-exchange-routing.module';
 import {StockExchangeComponent} from './stock-exchange.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';

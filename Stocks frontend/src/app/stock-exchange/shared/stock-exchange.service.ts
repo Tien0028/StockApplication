@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Socket} from 'ngx-socket-io';
 import {Observable} from 'rxjs';
-// import {Stock} from './stock.model';
 import {StockUpdateDTO} from './stock-update.dto';
 import {StockDTO} from './stock.dto';
 import {Stock} from './stock.model';
@@ -12,7 +11,6 @@ import {Stock} from './stock.model';
 export class StockExchangeService {
 
     constructor(private socket: Socket) { }
-
     updateStock(stockId: number, updatedStock: string): void { // NEW
         const stockUpdateDto: StockUpdateDTO = {
             id: stockId,
@@ -40,11 +38,9 @@ export class StockExchangeService {
     }
 
     getAllStocks(): Observable<StockDTO[]> {
-        const stks =  this.socket
+        const staks =  this.socket
             .fromEvent<StockDTO[]>('allStocks');
-        console.log('stks = ', stks);
-
-        return stks;
+        return staks;
     }
 
     connect(): void {
@@ -54,5 +50,4 @@ export class StockExchangeService {
     disconnect(): void {
         this.socket.disconnect();
     }
-
 }

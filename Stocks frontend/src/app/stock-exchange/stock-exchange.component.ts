@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {StockExchangeService} from './shared/stock-exchange.service';
-import {Observable, Subject, Subscription} from 'rxjs';
+import { Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 import {StockDTO} from './shared/stock.dto';
 import {Stock} from './shared/stock.model';
@@ -29,7 +29,7 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe(newStockValue => {
-                console.log('listen for stocks');
+                console.log('listening for backend stocks');
                 this.allStocks.push(newStockValue);
             });
 
@@ -38,14 +38,12 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
                 take(1)
             )
             .subscribe(stocks => {
-                console.log('get all');
                 this.allStocks = stocks;
-                console.log('allStocks Front =', stocks);
+                console.log('allStocks Frontend =', stocks);
             });
     }
 
     ngOnDestroy(): void {
-        console.log('Destroyed');
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
@@ -92,10 +90,5 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
         } else {
             console.log('error - no stock with that name found');
         }
-    }
-
-    createStock() {
-        //const stockDto: Stock = this.stockForm.value;
-        //this.stockExchangeService.createStock(stockDto);
     }
 }

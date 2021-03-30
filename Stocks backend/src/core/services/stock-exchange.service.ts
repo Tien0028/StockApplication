@@ -15,12 +15,13 @@ export class StockExchangeService implements IStockExchangeService {
   ) {}
 
   addStock(): void {
+    //Made for testing alone
     const testStock: Stock = {
-      id: 1,
-      name: 'Gnome Power',
-      description: 'Does gnome stuff',
-      currentPrice: 1111,
-      startPrice: 1010,
+      id: 7,
+      name: 'Nolan Power',
+      description: 'Stolen from New Orleans',
+      currentPrice: 888,
+      startPrice: 444,
       startDate: 'unimplemented',
     };
     this.stockRepository.create(testStock);
@@ -35,7 +36,6 @@ export class StockExchangeService implements IStockExchangeService {
       .finally(() => {
         console.log('Finally called');
       });
-    console.log('ADDed STOCK');
   }
 
   async updateStockValue(
