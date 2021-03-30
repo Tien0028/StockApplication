@@ -1,0 +1,78 @@
+<div fxLayout="column" fxFlex fxLayoutAlign="left right" style="background-color: firebrick">
+    <mat-card fxFlex="75" fxLayout="column">
+        <mat-card-header fxFlex="10" fxLayoutAlign="center top">
+            <mat-card-title> StockZ Manager </mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxFlex="90">
+                <div fxLayout="row" fxFlexFill>
+
+                <mat-card fxFlex="70" fxLayout="column">
+                    <mat-card-header fxLayoutAlign="center top">
+                        <mat-card-title style="background-color: aquamarine">Current Stocks</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-subtitle fxLayoutAlign="center left">
+                        <mat-card-footer>  All Stocks displayed...</mat-card-footer>
+                    </mat-card-subtitle>
+                    <mat-card-content fxFlex>
+
+                        <div fxLayout="column" fxFlex fxLayoutAlign="top left">
+
+                            <mat-selection-list fxFlex class="scrollList"
+                                #stocks [(ngModel)]="stockSelected" (ngModelChange)="onNgModelChange($event)" [multiple]="false">
+                                <mat-list-option *ngFor="let stock of allStocks "
+                                                 (click)="onNgModelChange(stocks)" [value]="stock.name">
+                                    {{stock.name}} = {{stock.currentPrice}}
+                                    <mat-divider></mat-divider>
+                                </mat-list-option>
+                            </mat-selection-list>
+
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card fxFlex="60" fxLayout="column">
+                    <mat-card-header fxLayoutAlign="center top">
+                        <mat-card-title style="font-weight: bold" style="background-color: aquamarine">Selected Stock</mat-card-title>
+
+                    </mat-card-header>
+                    <mat-card-subtitle fxLayoutAlign="center top">
+                        <mat-card-footer > Here you can edit your stocks... </mat-card-footer>
+                    </mat-card-subtitle>
+                    <mat-card-content fxFlex fxLayoutAlign="center bottom">
+
+                        <div fxLayout="column" fxFlexFill fxLayoutAlign="center bottom">
+
+                            <h1>{{updatedStock?.name}}</h1>
+                            <h4>{{updatedStock?.description}}</h4>
+
+                            <div fxLayout="row" fxFlex fxLayoutAlign="center center" fxLayoutGap="20px">
+
+                                <mat-form-field class="example-form-field">
+                                    <mat-label>Value of Stock</mat-label>
+                                    <input matInput type="text" [formControl]="stockFC">
+                                </mat-form-field>
+
+                                <div fxLayout="column" fxFlex fxLayoutAlign="center center" fxLayoutGap="10px">
+                                    <button (click)="increaseValue()"class="mdc-icon-button material-icons">keyboard_arrow_up</button>
+                                    <button (click)="decreaseValue()"class="mdc-icon-button material-icons">keyboard_arrow_down</button>
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row"  fxLayoutAlign="center top" fxLayoutGap="15px">
+                                <button style="background-color: forestgreen" (click)="updateStock()" class="mat-icon-button mat-icon">Update</button>
+                                <button style="background-color: deepskyblue" class="mat-icon-button mat-accent" routerLink="add-stock">Create</button>
+                            </div>
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+
+            </div>
+
+        </mat-card-content>
+
+    </mat-card>
+
+</div>
