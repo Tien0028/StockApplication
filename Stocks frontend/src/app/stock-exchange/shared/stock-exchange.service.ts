@@ -11,7 +11,7 @@ import {Stock} from './stock.model';
 export class StockExchangeService {
 
     constructor(private socket: Socket) { }
-    updateStock(stockId: number, updatedStock: string): void { // NEW
+    updateStock(stockId: number, updatedStock: string): void {
         const stockUpdateDto: StockUpdateDTO = {
             id: stockId,
             updatedStockValue: updatedStock
@@ -28,7 +28,7 @@ export class StockExchangeService {
         console.log('Stock updated in service');
 
         const ss = this.socket
-            .fromEvent<StockDTO>('allStocks'); // ??  gets the current stock value (of selected company)
+            .fromEvent<StockDTO>('allStocks');
         if (!ss) {
             console.log('Ss = undefined');
         } else {

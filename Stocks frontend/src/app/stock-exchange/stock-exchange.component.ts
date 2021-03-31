@@ -16,7 +16,7 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
     public stock: StockDTO;
     allStocks: StockDTO[] = [];
     unsubscribe$ = new Subject();
-    stockSelected: Stock | undefined; // NEW
+    stockSelected: Stock | undefined;
     updatedStock: StockDTO;
 
     allStocks$: Subscription;
