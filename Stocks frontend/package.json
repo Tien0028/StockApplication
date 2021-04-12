@@ -24,6 +24,7 @@
     "@angular/router": "~11.2.6",
     "@material/icon-button": "^10.0.0",
     "@material/list": "^10.0.0",
+    "@ngxs/store": "^3.7.1",
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
     "ngx-socket-io": "^3.2.0",
