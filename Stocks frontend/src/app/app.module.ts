@@ -9,6 +9,10 @@ import {MatCardModule} from '@angular/material/card';
 import { AddStockComponent } from './stock-exchange/shared/add-stock/add-stock.component';
 import { NgxsModule } from '@ngxs/store';
 import {environment} from '../environments/environment.prod';
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
+import {StockState} from './stock-exchange/shared/state/stocks.state';
 
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
@@ -40,9 +44,14 @@ export class SocketStocks extends Socket {
     MatCardModule,
     NgxsModule.forRoot([], {
       developmentMode: !environment.production
+    }),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsStoragePluginModule.forRoot({
+      key: StockState
     })
   ],
-  providers: [],
+  providers: [SocketStocks],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

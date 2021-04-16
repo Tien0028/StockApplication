@@ -17,7 +17,7 @@ export class StockExchangeService implements IStockExchangeService {
   addStock(): void {
     //Made for testing alone
     const testStock: Stock = {
-      id: 7,
+      id: 1,
       name: 'Nolan Power',
       description: 'Stolen from New Orleans',
       currentPrice: 888,
@@ -50,6 +50,7 @@ export class StockExchangeService implements IStockExchangeService {
   }
 
   async getAllStocks(): Promise<Stock[]> {
+    //this.addStock();
     const stocks = await this.stockRepository.find();
     console.log('Stocks = ', stocks);
     const allStocks: Stock[] = JSON.parse(JSON.stringify(stocks));

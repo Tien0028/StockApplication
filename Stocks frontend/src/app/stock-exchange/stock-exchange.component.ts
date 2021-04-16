@@ -1,10 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {StockExchangeService} from './shared/stock-exchange.service';
-import { Subject, Subscription} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 import {StockDTO} from './shared/stock.dto';
 import {Stock} from './shared/stock.model';
+import {StockState} from './shared/state/stocks.state';
+import {Select, Store} from '@ngxs/store';
+import {ListenForStocks} from './shared/state/stocks.actions';
 
 @Component({
     selector: 'app-stocks',
@@ -12,6 +15,8 @@ import {Stock} from './shared/stock.model';
     styleUrls: ['./stock-exchange.component.scss']
 })
 export class StockExchangeComponent implements OnInit, OnDestroy {
+    @Select(StockState.stocks) stocks$: Observable<StockDTO[]> | undefined;
+
     stockFC = new FormControl('');
     public stock: StockDTO;
     allStocks: StockDTO[] = [];
@@ -21,9 +26,11 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
 
     allStocks$: Subscription;
 
-    constructor(private stockExchangeService: StockExchangeService) {}
+    constructor(private stockExchangeService: StockExchangeService, private store: Store) {}
 
     ngOnInit(): void {
+        // this. allStocks$ = this.store.dispatch(new ListenForStocks());
+        location.reload();
         this.allStocks$ = this.stockExchangeService.listenForStockUpdates()
             .pipe(
                 takeUntil(this.unsubscribe$)
@@ -33,14 +40,16 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
                 this.allStocks.push(newStockValue);
             });
 
-        this.stockExchangeService.getAllStocks()
+        // this.stockExchangeService.getAllStocks()
+        this.store.dispatch(new ListenForStocks())
             .pipe(
                 take(1)
             )
             .subscribe(stocks => {
                 this.allStocks = stocks;
-                console.log('allStocks Frontend =', stocks);
+                console.log('allStocks in Frontend =', stocks);
             });
+
     }
 
     ngOnDestroy(): void {
