@@ -29,8 +29,8 @@ export class StockExchangeComponent implements OnInit, OnDestroy {
     constructor(private stockExchangeService: StockExchangeService, private store: Store) {}
 
     ngOnInit(): void {
-        // this. allStocks$ = this.store.dispatch(new ListenForStocks());
-        location.reload();
+        //this.allStocks$ = this.store.dispatch(new ListenForStocks())
+        //location.reload();
         this.allStocks$ = this.stockExchangeService.listenForStockUpdates()
             .pipe(
                 takeUntil(this.unsubscribe$)

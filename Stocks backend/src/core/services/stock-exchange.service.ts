@@ -17,12 +17,12 @@ export class StockExchangeService implements IStockExchangeService {
   addStock(): void {
     //Made for testing alone
     const testStock: Stock = {
-      id: 1,
-      name: 'Nolan Power',
-      description: 'Stolen from New Orleans',
-      currentPrice: 888,
-      startPrice: 444,
-      startDate: 'unimplemented',
+      id: 3,
+      name: 'Savage Companies ',
+      description: 'Stolen from a movie',
+      currentPrice: 8,
+      startPrice: 44,
+      startDate: 'unimplementedx',
     };
     this.stockRepository.create(testStock);
     this.stockRepository
